@@ -1,7 +1,25 @@
 
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic"
 
 
 const Products = () => {
+
+    const axiosPublic = useAxiosPublic();
+    
+
+    const { data: products = [], refetch } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const res = await axiosPublic.get('/products',
+            );
+            return res.data;
+        }
+    })
+
+    console.log(products);
+    
+
     return (
         <div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 p-2 mt-4">
