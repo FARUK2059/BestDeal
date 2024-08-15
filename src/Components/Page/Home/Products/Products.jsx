@@ -6,7 +6,7 @@ const Products = () => {
     const axiosPublic = useAxiosPublic();
 
     const { data: producted = [] } = useQuery({
-        queryKey: ['users'],
+        queryKey: ['products'],
         queryFn: async () => {
             const res = await axiosPublic.get('/products');
             return res.data;
@@ -152,12 +152,24 @@ const Products = () => {
                             <option value="">All Brands</option>
                             <option value="SoundMagic">SoundMagic</option>
                             <option value="VisionElectro">VisionElectro</option>
+                            <option value="GamePro">GamePro</option>
+                            <option value="FileWell">FileWell</option>
+                            <option value="ActionPro">ActionPro</option>
+                            <option value="TimeTech">TimeTech</option>
+                            <option value="ChergerUp">ChergerUp</option>
+                            <option value="BrightSmile">BrightSmile</option>
+                            <option value="SoundPro">SoundPro</option>
                         </select>
 
                         <select onChange={handleCategoryFilter} value={categoryFilter} className="select select-bordered">
                             <option value="">All Categories</option>
                             <option value="Electronics">Electronics</option>
                             <option value="Home Appliances">Home Appliances</option>
+                            <option value="Computers">Computers</option>
+                            <option value="Wearables">Wearables</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Cameras">Cameras</option>
+                            <option value="Personal Care">Personal Care</option>
                         </select>
 
                         <select onChange={handlePriceRangeFilter} value={priceRangeFilter.join('-')} className="select select-bordered">
