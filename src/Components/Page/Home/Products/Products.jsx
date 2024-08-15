@@ -108,16 +108,16 @@ const Products = () => {
                 <div className="text-center grid justify-center p-4">
                     <p className="bg-yellow-100 text-black text-2xl rounded-full font-extrabold p-2 w-72 text-center">Current page: <span className="text-blue-500">{currentPage}</span></p>
                 </div>
-                <button onClick={handlePrevPage}>Prev</button>
+                <button className="join-item btn btn-outline" onClick={handlePrevPage}>Previous</button>
                 {
                     pages.map(page => <button
                         className={currentPage === page ? 'selected' : undefined}
                         onClick={() => setCurrentPage(page)}
                         key={page}
-                    >{page}</button>)
+                    ><span className="join-item btn btn-square hover:bg-blue-500 text-white">{page}</span></button>)
                 }
-                <button onClick={handleNextPage}>Next</button>
-                <select value={itemsPerPage} onChange={handleItemsPerPage} name="" id="">
+                <button className="join-item btn btn-outline" onClick={handleNextPage}>Next</button>
+                <select value={itemsPerPage} className="join-item btn btn-square hover:bg-blue-600 text-white ml-2" onChange={handleItemsPerPage} name="" id="">
                     <option value="5">5</option>
                     <option value="10">10</option>
                     <option value="20">20</option>
