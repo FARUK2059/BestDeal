@@ -4,7 +4,7 @@ import Products from "./Products/Products";
 
 const Home = () => {
     return (
-        <div>
+        <div className="p-1">
             
             {/* Product sectionn */}
             <div>

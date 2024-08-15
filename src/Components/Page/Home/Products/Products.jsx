@@ -104,8 +104,10 @@ const Products = () => {
                 }
 
             </div>
-            <div className='pagination'>
-                <p>Current page: {currentPage}</p>
+            <div className='pagination mb-4 p-4'>
+                <div className="text-center grid justify-center p-4">
+                    <p className="bg-yellow-100 text-black text-2xl rounded-full font-extrabold p-2 w-72 text-center">Current page: <span className="text-blue-500">{currentPage}</span></p>
+                </div>
                 <button onClick={handlePrevPage}>Prev</button>
                 {
                     pages.map(page => <button
