@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import useAxiosPublic from "../../../Hooks/useAxiosPublic"
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { useEffect, useState } from "react";
 
 const Products = () => {
@@ -13,17 +13,12 @@ const Products = () => {
         }
     });
 
-    // console.log(producted);
-
     const [products, setProducts] = useState([]);
     const [search, setSearch] = useState('');
 
     useEffect(() => {
         setProducts(producted);
     }, [producted]);
-
-
-    // //////////////////////  ****  Serch Funtionlity  ****** /////////////////////////
 
     const handleSearchProduct = e => {
         e.preventDefault();
@@ -48,9 +43,6 @@ const Products = () => {
         setProducts(producted);
     };
 
-    ////////////////// ******   Pagination Funtionality **** /////////////////////////////////
-
-    // Pagination Functionality
     const [count, setCount] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(0);
@@ -72,7 +64,6 @@ const Products = () => {
 
     const handleItemsPerPage = e => {
         const val = parseInt(e.target.value);
-        console.log(val);
         setItemsPerPage(val);
         setCurrentPage(0);
     };
@@ -89,9 +80,54 @@ const Products = () => {
         }
     };
 
+    const [brandFilter, setBrandFilter] = useState('');
+    const [categoryFilter, setCategoryFilter] = useState('');
+    const [priceRangeFilter, setPriceRangeFilter] = useState([0, Infinity]);
+
+    const handleBrandFilter = (e) => {
+        setBrandFilter(e.target.value);
+    };
+
+    const handleCategoryFilter = (e) => {
+        setCategoryFilter(e.target.value);
+    };
+
+    const handlePriceRangeFilter = (e) => {
+        const [min, max] = e.target.value.split('-').map(Number);
+        setPriceRangeFilter([min, max]);
+    };
+
+    const filterProducts = () => {
+        let filteredData = producted;
+
+        if (brandFilter) {
+            filteredData = filteredData.filter((query) =>
+                query.brandName === brandFilter
+            );
+        }
+
+        if (categoryFilter) {
+            filteredData = filteredData.filter((query) =>
+                query.category === categoryFilter
+            );
+        }
+
+        if (priceRangeFilter) {
+            filteredData = filteredData.filter((query) => {
+                const price = query.price;
+                return price >= priceRangeFilter[0] && price <= priceRangeFilter[1];
+            });
+        }
+
+        setProducts(filteredData);
+    };
+
+    useEffect(() => {
+        filterProducts();
+    }, [brandFilter, categoryFilter, priceRangeFilter, producted]);
+
     return (
         <div>
-            {/* Search functionality section */}
             <div className="">
                 <div className="flex gap-2 justify-center p-6">
                     <form onSubmit={handleSubmitProduct} className="flex gap-2">
@@ -109,55 +145,95 @@ const Products = () => {
                 </div>
             </div>
 
+            <section className="flex justify-between items-center p-4">
+                <div>
+                    <div className="flex gap-2 justify-center p-6">
+                        <select onChange={handleBrandFilter} value={brandFilter} className="select select-bordered">
+                            <option value="">All Brands</option>
+                            <option value="SoundMagic">SoundMagic</option>
+                            <option value="VisionElectro">VisionElectro</option>
+                        </select>
+
+                        <select onChange={handleCategoryFilter} value={categoryFilter} className="select select-bordered">
+                            <option value="">All Categories</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Home Appliances">Home Appliances</option>
+                        </select>
+
+                        <select onChange={handlePriceRangeFilter} value={priceRangeFilter.join('-')} className="select select-bordered">
+                            <option value="0-Infinity">All Prices</option>
+                            <option value="0-50">Under $50</option>
+                            <option value="50-100">$50 to $100</option>
+                            <option value="100-500">$100 to $500</option>
+                            <option value="500-Infinity">Over $500</option>
+                        </select>
+
+                        <button onClick={handleReset} className="btn btn-warning hover:bg-primary hover:text-white">Reset</button>
+                    </div>
+                </div>
+            </section>
+
             <div className="grid lg:grid-cols-3 md:grid-cols-2 p-2 mt-4 gap-4">
-                {
-                    products.map(pro => (
-                        <div key={pro._id}>
-                            <article className="overflow-hidden rounded-lg shadow transition hover:shadow-lg">
-                                <img
-                                    alt=""
-                                    src={pro.productImage}
-                                    className="h-56 w-full object-cover mt-1"
-                                />
-                                <div className="bg-white p-4 sm:p-6">
-                                    <a href="#">
-                                        <h3 className="mt-0.5 text-gray-900 font-bold text-xl">{pro.productName}</h3>
-                                    </a>
-                                    <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Category : <span className="text-gray-500">{pro.category}</span></p>
-                                    <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Brand : <span className="text-gray-500">{pro.brandName}</span></p>
-                                    <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Description : <span className="text-gray-500">{pro.description}</span></p>
-                                    <div className="grid grid-cols-2">
-                                        <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Price : <span className="text-gray-500"> $ {pro.price}</span></div>
-                                        <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Rating : <span className="text-gray-500"> {pro.ratings}</span></div>
+                {products.map(pro => (
+                    <div key={pro._id}>
+                        <article className="overflow-hidden rounded-lg shadow transition hover:shadow-lg">
+                            <img
+                                alt=""
+                                src={pro.productImage}
+                                className="h-56 w-full object-cover mt-1"
+                            />
+                            <div className="bg-white p-4 sm:p-6">
+                                <a href="#">
+                                    <h3 className="mt-0.5 text-gray-900 font-bold text-xl">{pro.productName}</h3>
+                                </a>
+                                <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">
+                                    Category : <span className="text-gray-500">{pro.category}</span>
+                                </p>
+                                <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">
+                                    Brand : <span className="text-gray-500">{pro.brandName}</span>
+                                </p>
+                                <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">
+                                    Description : <span className="text-gray-500">{pro.description}</span>
+                                </p>
+                                <div className="grid grid-cols-2">
+                                    <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">
+                                        Price : <span className="text-gray-500">$ {pro.price}</span>
                                     </div>
-                                    <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Creation Date : <span className="text-gray-500">{pro.productCreationDateTime.date}, {pro.productCreationDateTime.time}</span></p>
+                                    <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">
+                                        Rating : <span className="text-gray-500"> {pro.ratings}</span>
+                                    </div>
                                 </div>
-                            </article>
-                        </div>
-                    ))
-                }
+                                <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">
+                                    Creation Date : <span className="text-gray-500">{pro.productCreationDateTime.date}, {pro.productCreationDateTime.time}</span>
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+                ))}
             </div>
 
             <div className='pagination mb-4 p-4'>
                 <div className="text-center grid justify-center p-4">
-                    <p className="bg-yellow-100 text-black text-2xl rounded-full font-extrabold p-2 w-72 text-center">Current page: <span className="text-blue-500">{currentPage}</span></p>
+                    <p className="bg-yellow-100 text-black text-2xl rounded-full font-extrabold p-2 w-72 text-center">
+                        Current page: <span className="text-blue-500">{currentPage}</span>
+                    </p>
                 </div>
                 <button className="join-item btn btn-outline" onClick={handlePrevPage}>Previous</button>
-                {
-                    pages.map(page => (
-                        <button
-                            className={currentPage === page ? 'selected' : undefined}
-                            onClick={() => setCurrentPage(page)}
-                            key={page}
-                        ><span className="join-item btn btn-square hover:bg-blue-500 text-white">{page}</span></button>
-                    ))
-                }
+                {pages.map(page => (
+                    <button
+                        className={currentPage === page ? 'selected' : undefined}
+                        onClick={() => setCurrentPage(page)}
+                        key={page}
+                    >
+                        <span className="join-item btn btn-square hover:bg-blue-500 text-white">{page}</span>
+                    </button>
+                ))}
                 <button className="join-item btn btn-outline" onClick={handleNextPage}>Next</button>
                 <select value={itemsPerPage} className="join-item btn btn-square hover:bg-blue-600 text-white ml-2" onChange={handleItemsPerPage}>
                     <option value="5">5</option>
                     <option value="10">10</option>
+                    <option value="15">15</option>
                     <option value="20">20</option>
-                    <option value="50">50</option>
                 </select>
             </div>
         </div>
