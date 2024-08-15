@@ -1,54 +1,126 @@
 
-import { useQuery } from "@tanstack/react-query";
-import useAxiosPublic from "../../../Hooks/useAxiosPublic"
+// import { useQuery } from "@tanstack/react-query";
+// import useAxiosPublic from "../../../Hooks/useAxiosPublic"
+import { useEffect, useState } from "react";
 
 
 const Products = () => {
 
-    const axiosPublic = useAxiosPublic();
-    
+    // const axiosPublic = useAxiosPublic();
 
-    const { data: products = [], refetch } = useQuery({
-        queryKey: ['users'],
-        queryFn: async () => {
-            const res = await axiosPublic.get('/products',
-            );
-            return res.data;
+
+    // const { data: products = [], refetch } = useQuery({
+    //     queryKey: ['users'],
+    //     queryFn: async () => {
+    //         const res = await axiosPublic.get('/products',
+    //         );
+    //         return res.data;
+    //     }
+    // })
+
+    // console.log(products);
+
+    // //////////////////////////   Pagination Funtionality   ////////////////////////////////
+
+    const [count, setCount] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [products, setProducts] = useState([]);
+
+
+    // const itemsPerPage = 10;
+    const numberOfPages = Math.ceil(count / itemsPerPage);
+    const pages = [...Array(numberOfPages).keys()];
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_API_URL}/productsCount`)
+            .then(res => res.json())
+            .then(data => setCount(data.count))
+    }, [])
+
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_API_URL}/product?page=${currentPage}&size=${itemsPerPage}`)
+            .then(res => res.json())
+            .then(data => setProducts(data))
+    }, [currentPage, itemsPerPage]);
+
+    const handleItemsPerPage = e => {
+        const val = parseInt(e.target.value);
+        console.log(val);
+        setItemsPerPage(val);
+        setCurrentPage(0);
+    }
+
+    const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
         }
-    })
+    }
 
-    console.log(products);
-    
+    const handleNextPage = () => {
+        if (currentPage < pages.length - 1) {
+            setCurrentPage(currentPage + 1);
+        }
+    }
+
+
 
     return (
         <div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 p-2 mt-4">
-                <article className="overflow-hidden rounded-lg shadow transition hover:shadow-lg">
-                    <img
-                        alt=""
-                        src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
-                        className="h-56 w-full object-cover"
-                    />
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 p-2 mt-4 gap-4">
 
-                    <div className="bg-white p-4 sm:p-6">
-                        {/* <time datetime="2022-10-10" className="block text-xs text-gray-500"> 10th Oct 2022 </time> */}
+                {
+                    products.map(pro => <div key={pro._id}>
 
-                        <a href="#">
-                            <h3 className="mt-0.5 text-gray-900 font-bold text-xl">Name</h3>
-                        </a>
+                        <article className="overflow-hidden rounded-lg shadow transition hover:shadow-lg">
+                            <img
+                                alt=""
+                                src={pro.productImage}
+                                className="h-56 w-full object-cover mt-1"
+                            />
 
-                        <div className="grid  grid-cols-2">
-                            <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Category : <span className="text-gray-500"> Lotto</span></div>
-                            <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Brand : <span className="text-gray-500"> Single</span></div>
-                        </div>
-                        <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Description : <span className="text-gray-500"> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut consequatur iste rerum expedita, iusto incidunt repudiandae fugit corporis deserunt reprehenderit cum deleniti provident nam blanditiis quae nisi porro praesentium libero!</span></p>
-                        <div className="grid  grid-cols-2">
-                            <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Price : <span className="text-gray-500"> $20</span></div>
-                            <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Rating : <span className="text-gray-500"> 4</span></div>
-                        </div>
-                        <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Creation Date : <span className="text-gray-500"> 26/03/2024,  12:45 PM </span></p>
+                            <div className="bg-white p-4 sm:p-6">
+                                {/* <time datetime="2022-10-10" className="block text-xs text-gray-500"> 10th Oct 2022 </time> */}
+
+                                <a href="#">
+                                    <h3 className="mt-0.5 text-gray-900 font-bold text-xl">{pro.productName}</h3>
+                                </a>
+
+                                <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Category : <span className="text-gray-500">{pro.category}</span></p>
+                                <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Brand : <span className="text-gray-500">{pro.brandName}</span></p>
+                                <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Description : <span className="text-gray-500">{pro.description}</span></p>
+                                <div className="grid  grid-cols-2">
+                                    <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Price : <span className="text-gray-500"> $ {pro.
+                                        price}</span></div>
+                                    <div className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Rating : <span className="text-gray-500"> {pro.ratings}</span></div>
+                                </div>
+                                <p className="mt-2 line-clamp-3 text-start font-medium text-black text-sm/relaxed">Creation Date : <span className="text-gray-500">{pro.productCreationDateTime.date},  {pro.productCreationDateTime.time} </span></p>
+                            </div>
+                        </article>
+
                     </div>
-                </article>
+
+                    )
+                }
+
+            </div>
+            <div className='pagination'>
+                <p>Current page: {currentPage}</p>
+                <button onClick={handlePrevPage}>Prev</button>
+                {
+                    pages.map(page => <button
+                        className={currentPage === page ? 'selected' : undefined}
+                        onClick={() => setCurrentPage(page)}
+                        key={page}
+                    >{page}</button>)
+                }
+                <button onClick={handleNextPage}>Next</button>
+                <select value={itemsPerPage} onChange={handleItemsPerPage} name="" id="">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                </select>
             </div>
         </div>
     );
