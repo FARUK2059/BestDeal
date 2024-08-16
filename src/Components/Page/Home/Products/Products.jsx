@@ -140,7 +140,7 @@ const Products = () => {
 
             {/* Search Funtionality */}
             <div className="">
-                <div className="lg:flex gap-2 justify-center">
+                <div className="flex gap-2 justify-center">
                     <form onSubmit={e => e.preventDefault()} className="flex gap-2">
                         <input
                             type="text"
@@ -149,7 +149,7 @@ const Products = () => {
                             name='search'
                             placeholder='Enter Product Name'
                             aria-label='Enter Product Name'
-                            className="input input-bordered input-primary w-full max-w-xs"
+                            className="input input-bordered input-primary w-full max-w-xs lg:w-96"
                         />
                     </form>
                     <button onClick={handleReset} className="btn btn-warning hover:bg-primary hover:text-white">Reset</button>
@@ -158,47 +158,60 @@ const Products = () => {
 
             {/* catagorization and sorting Section */}
             <section className=" justify-center items-center p-4">
-                <div className=" gap-2  block justify-center p-6">
-                    <select onChange={e => setBrandFilter(e.target.value)} value={brandFilter} className="select select-bordered">
-                        <option value="">All Brands</option>
-                        <option value="SoundMagic">SoundMagic</option>
-                        <option value="VisionElectro">VisionElectro</option>
-                        <option value="GamePro">GamePro</option>
-                        <option value="FileWell">FileWell</option>
-                        <option value="ActionPro">ActionPro</option>
-                        <option value="TimeTech">TimeTech</option>
-                        <option value="ChergerUp">ChergerUp</option>
-                        <option value="BrightSmile">BrightSmile</option>
-                        <option value="SoundPro">SoundPro</option>
-                    </select>
+                <div className=" lg:flex gap-2  justify-center p-4 ">
 
-                    <select onChange={e => setCategoryFilter(e.target.value)} value={categoryFilter} className="select select-bordered">
-                        <option value="">All Categories</option>
-                        <option value="Electronics">Electronics</option>
-                        <option value="Home Appliances">Home Appliances</option>
-                        <option value="Computers">Computers</option>
-                        <option value="Wearables">Wearables</option>
-                        <option value="Accessories">Accessories</option>
-                        <option value="Cameras">Cameras</option>
-                        <option value="Personal Care">Personal Care</option>
-                    </select>
+                    {/* Brand Section */}
+                    <div className="mb-2 ">
+                        <select onChange={e => setBrandFilter(e.target.value)} value={brandFilter} className="select select-bordered w-full lg:w-56">
+                            <option value="">All Brands</option>
+                            <option value="SoundMagic">SoundMagic</option>
+                            <option value="VisionElectro">VisionElectro</option>
+                            <option value="GamePro">GamePro</option>
+                            <option value="FileWell">FileWell</option>
+                            <option value="ActionPro">ActionPro</option>
+                            <option value="TimeTech">TimeTech</option>
+                            <option value="ChergerUp">ChergerUp</option>
+                            <option value="BrightSmile">BrightSmile</option>
+                            <option value="SoundPro">SoundPro</option>
+                        </select>
+                    </div>
 
-                    <select onChange={e => setPriceRangeFilter(e.target.value.split('-').map(Number))} value={priceRangeFilter.join('-')} className="select select-bordered">
-                        <option value="0-Infinity">All Prices</option>
-                        <option value="0-50">Under $50</option>
-                        <option value="50-100">$50 to $100</option>
-                        <option value="100-500">$100 to $500</option>
-                        <option value="500-Infinity">Over $500</option>
-                    </select>
+                    {/* Category section */}
+                    <div className="mb-2">
+                        <select onChange={e => setCategoryFilter(e.target.value)} value={categoryFilter} className="select select-bordered w-full lg:w-56">
+                            <option value="">All Categories</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Home Appliances">Home Appliances</option>
+                            <option value="Computers">Computers</option>
+                            <option value="Wearables">Wearables</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Cameras">Cameras</option>
+                            <option value="Personal Care">Personal Care</option>
+                        </select>
+                    </div>
 
-                    <select onChange={e => setSortOption(e.target.value)} value={sortOption} className="select select-bordered">
-                        <option value="">Sort By</option>
-                        <option value="priceLowToHigh">Price: Low to High</option>
-                        <option value="priceHighToLow">Price: High to Low</option>
-                        <option value="newestFirst">Date Added: Newest First</option>
-                    </select>
+                    <div className="mb-2">
+                        <select onChange={e => setPriceRangeFilter(e.target.value.split('-').map(Number))} value={priceRangeFilter.join('-')} className="select select-bordered w-full lg:w-56">
+                            <option value="0-Infinity">All Prices</option>
+                            <option value="0-50">Under $50</option>
+                            <option value="50-100">$50 to $100</option>
+                            <option value="100-500">$100 to $500</option>
+                            <option value="500-Infinity">Over $500</option>
+                        </select>
+                    </div>
 
-                    <button onClick={handleReset} className="btn btn-warning hover:bg-primary hover:text-white">Reset</button>
+                    <div className="mb-2">
+                        <select onChange={e => setSortOption(e.target.value)} value={sortOption} className="select select-bordered w-full lg:w-56">
+                            <option value="">Sort By</option>
+                            <option value="priceLowToHigh">Price: Low to High</option>
+                            <option value="priceHighToLow">Price: High to Low</option>
+                            <option value="newestFirst">Date Added: Newest First</option>
+                        </select>
+                    </div>
+
+                    <div className="mb-2">
+                        <button onClick={handleReset} className="btn btn-warning hover:bg-primary hover:text-white w-full">Reset</button>
+                    </div>
                 </div>
             </section>
 
