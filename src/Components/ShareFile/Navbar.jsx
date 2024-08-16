@@ -2,12 +2,15 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../Autentication/AuthProvider";
 import { toast } from "react-toastify";
+import useAxiosPublic from "../Hooks/useAxiosPublic";
+import { useQuery } from "@tanstack/react-query";
 
 
 
 const Navbar = () => {
 
     const { user, logOut } = useContext(AuthContext);
+    const axiosPublic = useAxiosPublic();
 
     const handleSignOut = () => {
         logOut()
@@ -16,6 +19,22 @@ const Navbar = () => {
             })
             .catch()
     }
+
+    
+
+    const { data: producted = [] } = useQuery({
+        queryKey: ['products'],
+        queryFn: async () => {
+            const res = await axiosPublic.get('/products');
+            return res.data;
+        }
+    });
+
+    const navbar = <>
+        <li><Link>About</Link></li>
+        <li><Link>Contact</Link></li>
+        <li><Link><span className="font-bold">Total Products </span>{producted.length}</Link></li>
+    </>
 
 
 
@@ -41,37 +60,19 @@ const Navbar = () => {
                         <ul
                             tabIndex={0}
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                            <li><a>Item 1</a></li>
-                            <li>
-                                <a>Parent</a>
-                                <ul className="p-2">
-                                    <li><a>Submenu 1</a></li>
-                                    <li><a>Submenu 2</a></li>
-                                </ul>
-                            </li>
-                            <li><a>Item 3</a></li>
+                            {navbar}
                         </ul>
                     </div>
                     <Link to="/" className="btn btn-ghost text-xl">BestDeal</Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
-                        <li><a>Item 1</a></li>
-                        <li>
-                            <details>
-                                <summary>Parent</summary>
-                                <ul className="p-2">
-                                    <li><a>Submenu 1</a></li>
-                                    <li><a>Submenu 2</a></li>
-                                </ul>
-                            </details>
-                        </li>
-                        <li><a>Item 3</a></li>
+                        {navbar}
                     </ul>
                 </div>
                 <div className="navbar-end">
                     {
-                        user ? <Link  onClick={handleSignOut} className="btn">Log Out</Link> : <Link to="/login" className="btn">Log In</Link>
+                        user ? <Link onClick={handleSignOut} className="btn">Log Out</Link> : <Link to="/login" className="btn">Log In</Link>
                     }
 
                 </div>

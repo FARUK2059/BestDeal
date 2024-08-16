@@ -140,7 +140,7 @@ const Products = () => {
 
             {/* Search Funtionality */}
             <div className="">
-                <div className="flex gap-2 justify-center p-6">
+                <div className="lg:flex gap-2 justify-center">
                     <form onSubmit={e => e.preventDefault()} className="flex gap-2">
                         <input
                             type="text"
@@ -157,8 +157,8 @@ const Products = () => {
             </div>
 
             {/* catagorization and sorting Section */}
-            <section className=" items-center p-4">
-                <div className="flex gap-2 justify-center p-6">
+            <section className=" justify-center items-center p-4">
+                <div className=" gap-2  block justify-center p-6">
                     <select onChange={e => setBrandFilter(e.target.value)} value={brandFilter} className="select select-bordered">
                         <option value="">All Brands</option>
                         <option value="SoundMagic">SoundMagic</option>
@@ -176,6 +176,11 @@ const Products = () => {
                         <option value="">All Categories</option>
                         <option value="Electronics">Electronics</option>
                         <option value="Home Appliances">Home Appliances</option>
+                        <option value="Computers">Computers</option>
+                        <option value="Wearables">Wearables</option>
+                        <option value="Accessories">Accessories</option>
+                        <option value="Cameras">Cameras</option>
+                        <option value="Personal Care">Personal Care</option>
                     </select>
 
                     <select onChange={e => setPriceRangeFilter(e.target.value.split('-').map(Number))} value={priceRangeFilter.join('-')} className="select select-bordered">
