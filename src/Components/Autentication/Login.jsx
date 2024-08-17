@@ -82,7 +82,7 @@ const Login = () => {
 
                             <section className="relative">
                                 <div className="text-center">
-                                    <h2 className="text-3xl font-bold mt-4 text-yellow-200">Register Now</h2>
+                                    <h2 className="text-3xl font-bold mt-4 text-yellow-200">Login Now</h2>
                                 </div>
                                 <div className="lg:m-20 lg:flex  lg:justify-center  lg:items-center  p-4  ">
 
