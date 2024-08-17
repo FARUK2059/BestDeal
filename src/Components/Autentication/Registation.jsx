@@ -93,7 +93,7 @@ const Registation = () => {
                                         <span className="label-text">Password</span>
                                     </label>
                                     <input type={showPassword ? "text" : "password"} name="password" placeholder="Input your password" className="input input-bordered text-white" required />
-                                    <span className="absolute mt-4 lg:right-4 right-4 md:right-4" onClick={() => setShowPassword(!showPassword)} >{showPassword ? <FaEye></FaEye> : <FaEyeSlash></FaEyeSlash>}</span>
+                                    <span className="absolute mt-14 ml-48" onClick={() => setShowPassword(!showPassword)} >{showPassword ? <FaEye></FaEye> : <FaEyeSlash></FaEyeSlash>}</span>
                                     <div className="label ">
                                         <span className="label-text-alt text-red-400">{errorpassword}</span>
                                     </div>
